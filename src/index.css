@@ -1,10 +1,21 @@
 :root {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --cream: #faf6f1;
+  --cream-deep: #f1e8dd;
+  --ink: #3a2e25;
+  --muted: #7a6a5c;
+  --gold: #c2a17a;
+  --rose: #d9b3a7;
+  --serif-head: 'Playfair Display', Georgia, serif;
+  --serif-body: 'Cormorant Garamond', Georgia, serif;
   color-scheme: light;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -14,6 +25,16 @@ body {
 }
 
 body {
-  background: #faf6f1;
-  color: #3a2e25;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--serif-body);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

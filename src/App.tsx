@@ -1,19 +1,20 @@
-import { wedding } from './config/wedding'
+import Hero from './components/Hero'
+import WeddingDetails from './components/WeddingDetails'
+import Countdown from './components/Countdown'
+import Gallery from './components/Gallery'
+import Footer from './components/Footer'
 import './App.css'
 
 function App() {
   return (
-    <main className="card">
-      <p className="eyebrow">Save the Date</p>
-      <h1>
-        {wedding.groomName}
-        <span className="amp">&amp;</span>
-        {wedding.brideName}
-      </h1>
-      <p className="placeholder">
-        Trang thiệp cưới đang được xây dựng — Phase 1 (baseline deploy).
-      </p>
-    </main>
+    <>
+      <Hero />
+      <WeddingDetails />
+      <Countdown />
+      <Gallery />
+      {/* RSVP form — Phase 3 */}
+      <Footer />
+    </>
   )
 }
 
