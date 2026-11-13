@@ -2,6 +2,7 @@ import Hero from './components/Hero'
 import WeddingDetails from './components/WeddingDetails'
 import Countdown from './components/Countdown'
 import Gallery from './components/Gallery'
+import RSVPForm from './components/RSVPForm'
 import Footer from './components/Footer'
 import './App.css'
 
@@ -12,7 +13,7 @@ function App() {
       <WeddingDetails />
       <Countdown />
       <Gallery />
-      {/* RSVP form — Phase 3 */}
+      <RSVPForm />
       <Footer />
     </>
   )

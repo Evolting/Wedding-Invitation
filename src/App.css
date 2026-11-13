@@ -255,3 +255,104 @@
   color: var(--ink);
   margin: 0;
 }
+
+/* ---------- rsvp ---------- */
+.rsvp__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.rsvp__honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.rsvp__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.rsvp__field > span {
+  font-family: var(--serif-head);
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.rsvp__field input[type='text'],
+.rsvp__field input[type='number'],
+.rsvp__field textarea {
+  font-family: var(--serif-body);
+  font-size: 1.1rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--cream-deep);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+
+.rsvp__field input:focus,
+.rsvp__field textarea:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+  border-color: var(--gold);
+}
+
+.rsvp__field input[aria-invalid='true'] {
+  border-color: #c0564a;
+}
+
+.rsvp__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rsvp__radios label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.rsvp__err {
+  color: #c0564a;
+  font-size: 0.9rem;
+  font-style: normal;
+}
+
+.rsvp__err--form {
+  text-align: center;
+  margin: 0;
+}
+
+.rsvp__submit {
+  align-self: center;
+  cursor: pointer;
+  background: var(--gold);
+  color: #fff;
+  border: 0;
+}
+
+.rsvp__submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.rsvp__done {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--gold);
+}
