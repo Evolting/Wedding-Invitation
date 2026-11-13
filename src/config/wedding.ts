@@ -24,19 +24,26 @@ export interface WeddingConfig {
 }
 
 export const wedding: WeddingConfig = {
-  groomName: 'Chú Rể',
-  brideName: 'Cô Dâu',
-  weddingDate: '2026-12-20T17:00:00+07:00',
+  groomName: 'Evolting',
+  brideName: 'Vbinf',
+  weddingDate: '2026-12-24T17:00:00+07:00',
   timezone: 'Asia/Ho_Chi_Minh',
-  dateText: 'Chủ Nhật, 20 tháng 12, 2026',
+  dateText: 'Thứ 5, 24 tháng 12, 2026',
   timeText: '17:00',
   venueName: 'Tên nhà hàng / địa điểm',
   venueAddress: 'Số nhà, đường, phường, quận, thành phố',
   mapsUrl: '',
-  heroImage: '', // ví dụ "/images/hero.webp"
+  heroImage: '/images/01-hero-couple.webp',
   gallery: [
-    // Thêm ảnh thật vào public/images/ rồi liệt kê ở đây:
-    // { src: '/images/1.webp', alt: 'Ảnh cưới 1' },
+    { src: '/images/02-bride-bouquet-detail.webp', alt: 'Cô dâu và bó hoa' },
+    { src: '/images/03-garden-walk.webp', alt: 'Dạo bước trong vườn' },
+    { src: '/images/04-white-roses.webp', alt: 'Hoa hồng trắng' },
+    { src: '/images/05-garden-couple.webp', alt: 'Cặp đôi trong vườn' },
+    { src: '/images/06-reception-decoration.webp', alt: 'Trang trí tiệc cưới' },
+    { src: '/images/07-bride-closeup.webp', alt: 'Cô dâu cận cảnh' },
+    { src: '/images/08-ceremony-venue.webp', alt: 'Không gian lễ cưới' },
+    { src: '/images/09-wedding-rings.webp', alt: 'Nhẫn cưới' },
+    { src: '/images/10-wedding-celebration.webp', alt: 'Khoảnh khắc chung vui' },
   ],
   thankYou: 'Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi.',
 }
