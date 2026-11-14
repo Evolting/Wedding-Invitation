@@ -22,6 +22,9 @@ export interface WeddingConfig {
   gallery: GalleryImage[]
   thankYou: string
   musicSrc: string // file nhạc nền trong public/music/, rỗng = ẩn nút nhạc
+  // true = thử phát ngay khi mở; nếu trình duyệt chặn thì phát khi khách
+  // chạm/cuộn/bấm lần đầu. (Autoplay có tiếng luôn cần 1 thao tác.)
+  musicAutoplay: boolean
 }
 
 export const wedding: WeddingConfig = {
@@ -48,4 +51,5 @@ export const wedding: WeddingConfig = {
   ],
   thankYou: 'Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi.',
   musicSrc: '/music/bg-small.mp3',
+  musicAutoplay: true,
 }
