@@ -2,55 +2,62 @@ import { useEffect, useRef, useState } from 'react'
 import { wedding } from '../config/wedding'
 
 // Nút nổi bật/tắt nhạc nền.
-// Autoplay có tiếng bị trình duyệt chặn (nhất là mobile/iOS), nên khi
-// musicAutoplay = true: thử phát ngay; nếu bị chặn, phát khi khách
-// chạm/cuộn/bấm lần đầu bất kỳ đâu.
+// Autoplay có tiếng bị trình duyệt chặn (desktop chặn mạnh hơn mobile),
+// nên khi musicAutoplay = true: thử phát ngay; nếu bị chặn, phát khi khách
+// chạm/cuộn/bấm lần đầu bất kỳ đâu (trừ chính nút nhạc).
 export default function MusicToggle() {
   const audioRef = useRef<HTMLAudioElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const userControlled = useRef(false) // khách đã tự bấm nút -> ngừng auto
   const [playing, setPlaying] = useState(false)
 
-  // Đồng bộ state -> thẻ audio
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-    if (playing) audio.play().catch(() => setPlaying(false))
-    else audio.pause()
-  }, [playing])
+  function play() {
+    const a = audioRef.current
+    if (!a) return
+    a.play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false))
+  }
 
-  // Thử autoplay + fallback theo thao tác đầu tiên
+  function pause() {
+    audioRef.current?.pause()
+    setPlaying(false)
+  }
+
+  // Nút bấm tay: luôn thắng auto
+  function toggle() {
+    userControlled.current = true
+    if (audioRef.current?.paused) play()
+    else pause()
+  }
+
+  // Autoplay + fallback theo thao tác đầu tiên
   useEffect(() => {
     if (!wedding.musicSrc || !wedding.musicAutoplay) return
-    const audio = audioRef.current
-    if (!audio) return
+    const a = audioRef.current
+    if (!a) return
 
-    let armed = true
-
-    audio
-      .play()
+    a.play()
       .then(() => setPlaying(true))
       .catch(() => {
-        // Bị chặn -> chờ thao tác đầu tiên
-        const start = () => {
-          if (!armed) return
-          armed = false
-          setPlaying(true)
+        // Bị chặn -> chờ thao tác đầu (bỏ qua click vào nút nhạc)
+        const start = (e: Event) => {
+          if (userControlled.current) return remove()
+          if (btnRef.current && e.target instanceof Node && btnRef.current.contains(e.target))
+            return // để nút tự xử lý
+          play()
           remove()
         }
         const remove = () => {
           window.removeEventListener('pointerdown', start)
           window.removeEventListener('keydown', start)
-          window.removeEventListener('touchstart', start)
           window.removeEventListener('scroll', start)
         }
-        window.addEventListener('pointerdown', start, { once: true })
-        window.addEventListener('keydown', start, { once: true })
-        window.addEventListener('touchstart', start, { once: true })
-        window.addEventListener('scroll', start, { once: true, passive: true })
+        window.addEventListener('pointerdown', start)
+        window.addEventListener('keydown', start)
+        window.addEventListener('scroll', start, { passive: true })
       })
-
-    return () => {
-      armed = false
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!wedding.musicSrc) return null
@@ -59,9 +66,10 @@ export default function MusicToggle() {
     <>
       <audio ref={audioRef} src={wedding.musicSrc} loop preload="auto" />
       <button
+        ref={btnRef}
         type="button"
         className={`music-toggle ${playing ? 'is-playing' : ''}`}
-        onClick={() => setPlaying((p) => !p)}
+        onClick={toggle}
         aria-label={playing ? 'Tắt nhạc nền' : 'Bật nhạc nền'}
         aria-pressed={playing}
       >
