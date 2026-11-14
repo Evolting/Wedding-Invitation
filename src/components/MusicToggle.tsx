@@ -51,19 +51,25 @@ export default function MusicToggle() {
         return // nút tự xử lý, giữ listener
       }
       const a = audioRef.current
-      console.log('[music] calling play(), readyState=', a?.readyState, 'paused=', a?.paused)
-      a?.play().then(() => console.log('[music] gesture play OK')).catch((err) => console.log('[music] gesture play FAIL', err?.name, err?.message))
-      remove()
+      if (!a) return
+      // Chỉ gỡ listener khi play THÀNH CÔNG. Fail -> giữ, thử lại gesture sau.
+      // (scroll KHÔNG tính là gesture hợp lệ trên Chrome -> không nghe scroll.)
+      a.play()
+        .then(() => {
+          console.log('[music] gesture play OK')
+          remove()
+        })
+        .catch((err) =>
+          console.log('[music] gesture play FAIL', err?.name, err?.message),
+        )
     }
     const remove = () => {
       window.removeEventListener('pointerdown', start)
       window.removeEventListener('keydown', start)
-      window.removeEventListener('scroll', start)
       window.removeEventListener('touchstart', start)
     }
     window.addEventListener('pointerdown', start)
     window.addEventListener('keydown', start)
-    window.addEventListener('scroll', start, { passive: true })
     window.addEventListener('touchstart', start, { passive: true })
 
     return remove
