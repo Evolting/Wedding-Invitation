@@ -29,7 +29,7 @@ export const wedding: WeddingConfig = {
   weddingDate: '2026-12-24T17:00:00+07:00',
   timezone: 'Asia/Ho_Chi_Minh',
   dateText: 'Thứ 5, 24 tháng 12, 2026',
-  timeText: '17:00',
+  timeText: '08:00',
   venueName: 'Tên nhà hàng / địa điểm',
   venueAddress: 'Số nhà, đường, phường, quận, thành phố',
   mapsUrl: '',
