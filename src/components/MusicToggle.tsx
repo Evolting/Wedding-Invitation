@@ -2,53 +2,57 @@ import { useEffect, useRef, useState } from 'react'
 import { wedding } from '../config/wedding'
 
 // Nút nổi bật/tắt nhạc nền.
-// Autoplay có tiếng bị chặn trên desktop, nên khi musicAutoplay = true:
-//  1) thử phát ngay (mobile thường cho),
-//  2) ĐỒNG THỜI gắn ngay listener: thao tác đầu tiên (chạm/cuộn/bấm) -> phát.
-// Gắn listener ngay từ đầu (không chờ play() reject) để không mất thao tác
-// trong lúc file nhạc còn đang tải.
+// Autoplay có tiếng bị chặn (desktop chặn mạnh). Khi musicAutoplay = true:
+// phát ở thao tác ĐẦU TIÊN của khách (chạm/cuộn/bấm bất kỳ đâu, trừ nút nhạc).
+// KHÔNG gọi play() lúc mở để tránh promise pending gây interrupt gesture sau.
 export default function MusicToggle() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
-  const userControlled = useRef(false) // khách tự bấm nút -> ngừng auto
+  const userControlled = useRef(false)
   const [playing, setPlaying] = useState(false)
 
-  function play() {
-    audioRef.current
-      ?.play()
-      .then(() => setPlaying(true))
-      .catch(() => setPlaying(false))
-  }
-
-  function pause() {
-    audioRef.current?.pause()
-    setPlaying(false)
-  }
+  // Trạng thái lấy từ chính thẻ audio -> luôn đúng
+  useEffect(() => {
+    const a = audioRef.current
+    if (!a) return
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
+    a.addEventListener('play', onPlay)
+    a.addEventListener('pause', onPause)
+    return () => {
+      a.removeEventListener('play', onPlay)
+      a.removeEventListener('pause', onPause)
+    }
+  }, [])
 
   function toggle() {
     userControlled.current = true
-    if (audioRef.current?.paused) play()
-    else pause()
+    const a = audioRef.current
+    if (!a) return
+    console.log('[music] toggle, paused=', a.paused)
+    if (a.paused) a.play().then(() => console.log('[music] toggle play OK')).catch((err) => console.log('[music] toggle play FAIL', err?.name, err?.message))
+    else a.pause()
   }
 
+  // Fallback: thao tác đầu tiên -> phát
   useEffect(() => {
     if (!wedding.musicSrc || !wedding.musicAutoplay) return
+    console.log('[music] listeners armed')
 
-    // 1) thử phát ngay (mobile)
-    play()
-
-    // 2) fallback: thao tác đầu tiên -> phát (bỏ qua bấm vào nút nhạc)
     const start = (e: Event) => {
+      console.log('[music] gesture:', e.type, 'target=', (e.target as HTMLElement)?.tagName)
       if (userControlled.current) return remove()
       if (
         btnRef.current &&
         e.target instanceof Node &&
         btnRef.current.contains(e.target)
-      )
-        return // để nút tự xử lý
-      // Luôn gọi play() vì đây là user gesture thật -> bỏ qua cờ paused
-      // (play() lúc mở đã đặt paused=false dù bị chặn).
-      play()
+      ) {
+        console.log('[music] target is button -> skip, let onClick handle')
+        return // nút tự xử lý, giữ listener
+      }
+      const a = audioRef.current
+      console.log('[music] calling play(), readyState=', a?.readyState, 'paused=', a?.paused)
+      a?.play().then(() => console.log('[music] gesture play OK')).catch((err) => console.log('[music] gesture play FAIL', err?.name, err?.message))
       remove()
     }
     const remove = () => {
