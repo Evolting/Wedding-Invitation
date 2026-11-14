@@ -47,5 +47,5 @@ export const wedding: WeddingConfig = {
     { src: '/images/10-wedding-celebration.webp', alt: 'Khoảnh khắc chung vui' },
   ],
   thankYou: 'Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi.',
-  musicSrc: '', // ví dụ "/music/bg.mp3"
+  musicSrc: '/music/bg-small.mp3',
 }
