@@ -356,3 +356,45 @@
   font-style: italic;
   color: var(--gold);
 }
+
+/* ---------- music toggle ---------- */
+.music-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--gold);
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(58, 46, 37, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.music-toggle.is-playing {
+  background: var(--gold);
+  color: #fff;
+}
+
+.music-toggle.is-playing .music-toggle__icon {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle.is-playing .music-toggle__icon {
+    animation: none;
+  }
+}
