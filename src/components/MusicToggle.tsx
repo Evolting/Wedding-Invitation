@@ -46,7 +46,9 @@ export default function MusicToggle() {
         btnRef.current.contains(e.target)
       )
         return // để nút tự xử lý
-      if (audioRef.current?.paused) play()
+      // Luôn gọi play() vì đây là user gesture thật -> bỏ qua cờ paused
+      // (play() lúc mở đã đặt paused=false dù bị chặn).
+      play()
       remove()
     }
     const remove = () => {
